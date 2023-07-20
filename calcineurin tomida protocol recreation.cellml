@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model cmeta:id="calcineurin" name="calcineurin" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#" xmlns:cmeta="http://www.cellml.org/metadata/1.0#">
+    <!-- This is lifted directly from Cooling et al //-->
+    <units name="s">
+        <unit units="second"/>
+    </units>
+    <units name="nM">
+        <unit prefix="nano" units="mole"/>
+        <unit exponent="-1" units="liter"/>
+    </units>
+    <component name="calcineurin">
+        <variable name="t" public_interface="in" units="s"/>
+        <variable name="Ca" public_interface="in" units="nM"/>
+        <variable initial_value="6000" name="M" units="nM"/>
+        <variable initial_value="1000" name="Ntot" public_interface="out" units="nM"/>
+        <variable initial_value="535" name="K_mN" units="nM"/>
+        <variable initial_value="2.92" name="n" units="dimensionless"/>
+        <variable initial_value="1760" name="K_dN" units="nM"/>
+        <variable name="act_N" public_interface="out" units="dimensionless"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>act_N</ci>
+                <apply>
+                    <divide/>
+                    <apply>
+                        <power/>
+                        <ci>Ca</ci>
+                        <ci>n</ci>
+                    </apply>
+                    <apply>
+                        <plus/>
+                        <apply>
+                            <power/>
+                            <ci>Ca</ci>
+                            <ci>n</ci>
+                        </apply>
+                        <apply>
+                            <times/>
+                            <apply>
+                                <power/>
+                                <ci>K_mN</ci>
+                                <ci>n</ci>
+                            </apply>
+                            <apply>
+                                <plus/>
+                                <cn cellml:units="dimensionless">1</cn>
+                                <apply>
+                                    <divide/>
+                                    <ci>K_dN</ci>
+                                    <ci>M</ci>
+                                </apply>
+                            </apply>
+                        </apply>
+                    </apply>
+                </apply>
+            </apply>
+        </math>
+    </component>
+</model>

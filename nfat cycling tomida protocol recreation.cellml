@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model cmeta:id="NFATCycling" name="NFATCycling" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#" xmlns:cmeta="http://www.cellml.org/metadata/1.0#">
+    <units name="s">
+        <unit units="second"/>
+    </units>
+    <units name="nM">
+        <unit prefix="nano" units="mole"/>
+        <unit exponent="-1" units="liter"/>
+    </units>
+    <units name="per_s">
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="nM_per_s">
+        <unit units="nM"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="per_nM_s">
+        <unit exponent="-1" units="nM"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <component name="NFAT_Cycling">
+        <variable name="t" public_interface="in" units="s"/>
+        <variable initial_value="0.0004806012" name="NFATN_c" units="nM"/>
+        <variable initial_value="0.10902441" name="NFATN_n" public_interface="out" units="nM"/>
+        <variable initial_value="0.9957805651" name="NFATp_c" units="nM"/>
+        <variable initial_value="0.077917275" name="NFATp_n" public_interface="out" units="nM"/>
+        <variable name="Ccn" private_interface="in" units="dimensionless"/>
+        <variable name="Ntot" public_interface="in" units="nM"/>
+        <variable name="act_N" private_interface="in" units="dimensionless"/>
+        <variable name="N" units="nM"/>
+        <variable name="p" units="dimensionless"/>
+        <!-- above 2 variables are my own creation//-->
+        <variable initial_value="7.68934e-6" name="k_f1" units="per_nM_s"/>
+        <variable initial_value="0.019256" name="k_r1" units="per_s"/>
+        <variable initial_value="0.00144192" name="k_f2" units="per_s"/>
+        <variable initial_value="0.000361944" name="k_f3" units="per_s"/>
+        <variable initial_value="4.70813e-5" name="k_r3" units="per_nM_s"/>
+        <variable initial_value="0.000444695" name="k_f4" units="per_s"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>N</ci>
+                <apply>
+                    <times/>
+                    <ci>Ntot</ci>
+                    <ci>act_N</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>p</ci>
+                <apply>
+                    <minus/>
+                    <cn cellml:units="dimensionless">1</cn>
+                    <ci>act_N</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>NFATp_c</ci>
+                </apply>
+                <apply>
+                    <plus/>
+                    <apply>
+                        <times/>
+                        <apply>
+                            <minus/>
+                            <ci>k_f1</ci>
+                        </apply>
+                        <ci>NFATp_c</ci>
+                        <ci>N</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>k_r1</ci>
+                        <ci>NFATN_c</ci>
+                        <ci>p</ci>
+                    </apply>
+                    <apply>
+                        <divide/>
+                        <apply>
+                            <times/>
+                            <ci>k_f4</ci>
+                            <ci>NFATp_n</ci>
+                        </apply>
+                        <ci>Ccn</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>NFATN_c</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <minus/>
+                        <apply>
+                            <times/>
+                            <ci>k_f1</ci>
+                            <ci>NFATp_c</ci>
+                            <ci>N</ci>
+                        </apply>
+                        <apply>
+                            <times/>
+                            <ci>k_r1</ci>
+                            <ci>NFATN_c</ci>
+                            <ci>p</ci>
+                        </apply>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>k_f2</ci>
+                        <ci>NFATN_c</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>NFATN_n</ci>
+                </apply>
+                <apply>
+                    <plus/>
+                    <apply>
+                        <minus/>
+                        <apply>
+                            <times/>
+                            <apply>
+                                <times/>
+                                <ci>k_f2</ci>
+                                <ci>NFATN_c</ci>
+                            </apply>
+                            <ci>Ccn</ci>
+                        </apply>
+                        <apply>
+                            <times/>
+                            <ci>k_f3</ci>
+                            <ci>NFATN_n</ci>
+                            <ci>p</ci>
+                        </apply>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>k_r3</ci>
+                        <ci>NFATp_n</ci>
+                        <ci>N</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>NFATp_n</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <minus/>
+                        <apply>
+                            <times/>
+                            <ci>k_f3</ci>
+                            <ci>NFATN_n</ci>
+                            <ci>p</ci>
+                        </apply>
+                        <apply>
+                            <times/>
+                            <ci>k_r3</ci>
+                            <ci>NFATp_n</ci>
+                            <ci>N</ci>
+                        </apply>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>k_f4</ci>
+                        <ci>NFATp_n</ci>
+                    </apply>
+                </apply>
+            </apply>
+        </math>
+        <!-- conversion factor Ccn is multiplied when modeling reaction into nucleus// 
+and divided when modeling reaction into cytosol//-->
+    </component>
+</model>

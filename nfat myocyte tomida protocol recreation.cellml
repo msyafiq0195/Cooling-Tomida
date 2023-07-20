@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model cmeta:id="NFATMyocyte_TomidaProtocol" name="NFATMyocyte_TomidaProtocol" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#" xmlns:cmeta="http://www.cellml.org/metadata/1.0#" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <import xlink:href="calcium tomida protocol recreation.cellml">
+        <component component_ref="calcium" name="calcium"/>
+    </import>
+    <import xlink:href="calcineurin tomida protocol recreation.cellml">
+        <component component_ref="calcineurin" name="calcineurin"/>
+    </import>
+    <import xlink:href="nfat cycling tomida protocol recreation.cellml">
+        <component component_ref="NFAT_Cycling" name="NFAT_Cycling"/>
+    </import>
+    <units name="s">
+        <unit units="second"/>
+    </units>
+    <units name="nM">
+        <unit prefix="nano" units="mole"/>
+        <unit exponent="-1" units="liter"/>
+    </units>
+    <component name="environment">
+        <variable name="t" private_interface="out" units="s"/>
+    </component>
+    <component name="geometry">
+        <variable initial_value="50" name="Ccn" private_interface="out" units="dimensionless"/>
+    </component>
+    <component name="NFAT_Cycling_interface">
+        <variable name="nuclearNFAT" units="nM"/>
+        <variable name="NFATN_n" public_interface="in" units="nM"/>
+        <variable name="NFATp_n" public_interface="in" units="nM"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>nuclearNFAT</ci>
+                <apply>
+                    <plus/>
+                    <ci>NFATN_n</ci>
+                    <ci>NFATp_n</ci>
+                </apply>
+            </apply>
+        </math>
+    </component>
+    <group>
+        <relationship_ref relationship="encapsulation"/>
+        <component_ref component="environment">
+            <component_ref component="geometry">
+                <component_ref component="calcium"/>
+                <component_ref component="calcineurin"/>
+                <component_ref component="NFAT_Cycling"/>
+                <component_ref component="NFAT_Cycling_interface"/>
+            </component_ref>
+        </component_ref>
+    </group>
+    <connection>
+        <map_components component_1="environment" component_2="calcium"/>
+        <map_variables variable_1="t" variable_2="t"/>
+    </connection>
+    <connection>
+        <map_components component_1="environment" component_2="calcineurin"/>
+        <map_variables variable_1="t" variable_2="t"/>
+    </connection>
+    <connection>
+        <map_components component_1="environment" component_2="NFAT_Cycling"/>
+        <map_variables variable_1="t" variable_2="t"/>
+    </connection>
+    <connection>
+        <map_components component_1="geometry" component_2="NFAT_Cycling"/>
+        <map_variables variable_1="Ccn" variable_2="Ccn"/>
+    </connection>
+    <connection>
+        <map_components component_1="calcium" component_2="calcineurin"/>
+        <map_variables variable_1="Ca" variable_2="Ca"/>
+    </connection>
+    <connection>
+        <map_components component_1="calcineurin" component_2="NFAT_Cycling"/>
+        <map_variables variable_1="act_N" variable_2="act_N"/>
+        <map_variables variable_1="Ntot" variable_2="Ntot"/>
+    </connection>
+    <connection>
+        <map_components component_1="NFAT_Cycling_interface" component_2="NFAT_Cycling"/>
+        <map_variables variable_1="NFATN_n" variable_2="NFATN_n"/>
+        <map_variables variable_1="NFATp_n" variable_2="NFATp_n"/>
+    </connection>
+</model>
